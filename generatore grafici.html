@@ -1,0 +1,73 @@
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+    referrerpolicy="no-referrer"
+></script>
+<script>
+    //Creare un grafico animato con 10 colonne, ognuna con valori casuali che "crescono" al caricamento della pagina
+
+    //document ready serve per assicurarsi che tutto l'html esista prima di eseguire il codice sottostante
+    $(document).ready(function () {
+        //Creazione dell'intervallo che creerà ogni circa 4 secondi un nuovo grafico
+        setInterval(function () {
+            //Creazione del numero di colonne
+            let colnum = parseInt(Math.random() * 10);
+            $(".grafico").html("");
+            for (let i = 0; i < colnum; i++) {
+                $(".grafico").append(
+                    "<div class='colonna'><span>0</span></div>"
+                );
+            }
+            $(".colonna").each(function () {
+                //Assegno ad ogni colonna altezza e colore casuale
+                let num = parseInt(Math.random() * 500);
+                let colore = parseInt(Math.random() * 255); //Math.ceil(Math.random() * 255);   metodo alternativo al parseInt
+                $(this).height(num); //altezza
+                $("span", this).text(num); //testo
+                $(this).css("background-color", "hsl(" + colore + ",50%,50%)"); //colore
+            });
+        }, 4000);
+    });
+</script>
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+    }
+    .grafico {
+        width: auto;
+        height: 700px;
+        display: flex;
+        align-items: flex-end;
+        gap: 20px;
+    }
+
+    .colonna {
+        width: 50px;
+        height: 0px;
+        border: 2px solid black;
+        background-color: grey;
+        transition: 2s height;
+        text-align: center;
+    }
+
+    .colonna span {
+        position: relative;
+        display: inline-block;
+        font-weight: bold;
+        top: -20px;
+    }
+</style>
+<body>
+    <div class="grafico">
+        <div class="colonna"><span>0</span></div>
+        <div class="colonna"><span>0</span></div>
+        <div class="colonna"><span>0</span></div>
+        <div class="colonna"><span>0</span></div>
+        <div class="colonna"><span>0</span></div>
+        <div class="colonna"><span>0</span></div>
+        <div class="colonna"><span>0</span></div>
+        <div class="colonna"><span>0</span></div>
+        <div class="colonna"><span>0</span></div>
+        <div class="colonna"><span>0</span></div>
+    </div>
+</body>

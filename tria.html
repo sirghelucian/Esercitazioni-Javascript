@@ -1,0 +1,139 @@
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+    referrerpolicy="no-referrer"
+></script>
+<!--GIOCO TRIA-->
+<h1>Tria</h1>
+<div id="tria">
+    <div class="grid">
+        <div class="cell r1 c1 d1"></div>
+        <div class="cell v r1 c2"></div>
+        <div class="cell r1 c3 d2"></div>
+        <div class="cell h r2 c1"></div>
+        <div class="cell h v r2 c2 d1 d2"></div>
+        <div class="cell h r2 c3"></div>
+        <div class="cell r3 c1 d2"></div>
+        <div class="cell v r3 c2"></div>
+        <div class="cell r3 c3 d1"></div>
+    </div>
+    <div id="messaggio"></div>
+</div>
+
+<style>
+    #messaggio {
+        position: absolute;
+        top: 50%;
+        padding: 10px 20px;
+        text-align: center;
+        font-size: 4rem;
+        display: none;
+    }
+
+    .vinci {
+        background-color: aquamarine;
+        color: cadetblue;
+        box-shadow: 1px 1px 20px 3px #30aa72;
+    }
+
+    .perdi {
+        background-color: rgb(255, 208, 0);
+        color: rgb(255, 0, 0);
+        box-shadow: 1px 1px 20px 3px #f77d58;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    .cell {
+        aspect-ratio: 1;
+        box-sizing: border-box;
+        text-align: center;
+        font-size: 10rem;
+        font-family: sans-serif;
+    }
+
+    .cell:hover {
+        background-color: aliceblue;
+    }
+
+    #tria {
+        display: flex;
+        justify-content: center;
+        position: relative;
+    }
+
+    #tria .grid {
+        width: 600px;
+        display: grid;
+        grid-template-columns: 33% 33% 33%;
+    }
+
+    .cell.h {
+        border-top: 2px solid black;
+        border-bottom: 2px solid black;
+    }
+
+    .cell.v {
+        border-left: 2px solid black;
+        border-right: 2px solid black;
+    }
+</style>
+<script>
+    $(".cell").on("click", function () {
+        let cella_cliccata = $(this); //this=oggetto dell'evento che si clicca
+        //gioco
+        if ($(cella_cliccata).html() == "") {
+            $(cella_cliccata).html("O");
+        }
+
+        if (!EsisteVincitore("O")) {
+            //faccio giocare il computer
+            //scelgo una casella vuota a caso
+            let cella_da_riempire = parseInt(Math.random() * 9);
+            while ($(".cell:eq(" + cella_da_riempire + ")").html() != "") {
+                cella_da_riempire = parseInt(Math.random() * 9);
+                //va in loop all'ultima cella quando clicca O
+            }
+            $(".cell:eq(" + cella_da_riempire + ")").html("X");
+            EsisteVincitore("X");
+        }
+    });
+
+    function EsisteVincitore(p) {
+        //p=simbolo del giocatore (O oppure X)
+        //deve ritornare true o false
+        let w = false;
+        let combinazioni_vincenti = [
+            ".r1",
+            ".r2",
+            ".r3",
+            ".c1",
+            ".c2",
+            ".c3",
+            ".d1",
+            ".d2",
+        ];
+        combinazioni_vincenti.forEach(function (e) {
+            //controllo ogni possibile combinazione vincente
+            //vinco quando ne trovo una che contiene il simbolo p
+            if (
+                $(e)[0].innerHTML == p &&
+                $(e)[1].innerHTML == p &&
+                $(e)[2].innerHTML == p
+            ) {
+                w = true;
+                //accendo il messaggio di vincita
+                $("#messaggio").css("display", "block");
+                if (p == "O") {
+                    $("#messaggio").addClass("vinci");
+                    $("#messaggio").html("Complimenti hai vinto!");
+                } else {
+                    $("#messaggio").addClass("perdi");
+                    $("#messaggio").html("Mi dispiace hai perso!");
+                }
+            }
+        });
+        return w;
+    }
+</script>
